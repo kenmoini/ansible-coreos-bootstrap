@@ -1,17 +1,37 @@
-# coreos-bootstrap
+coreos-bootstrap
+================
 
-In order to effectively run ansible, the target machine needs to have a python interpreter. Coreos machines are minimal and do not ship with any version of python. To get around this limitation we can install [pypy](http://pypy.org/), a lightweight python interpreter. The coreos-bootstrap role will install pypy for us and we will update our inventory file to use the installed python interpreter.
+In order to effectively run [Ansible], the target machine needs to have a [Python] interpreter. [CoreOS] machines are minimal and do not ship with any version of [Python]. To get around this limitation we can install [PyPy], a lightweight [Python] interpreter. The `coreos-bootstrap` role will install [PyPy] for us and we will update our inventory file to use the installed python interpreter.
 
-# install
 
+
+
+## Install
+
+Add to your `requirements.yml`:
+```yaml
+- name: instrumentisto.coreos-bootstrap
+  src: git+https://github.com/instrumentisto/ansible-coreos-bootstrap
+  version: master
 ```
-ansible-galaxy install defunctzombie.coreos-bootstrap
+
+And resolve your depencies:
+```bash
+ansible-galaxy install -r requirements.yml
 ```
 
-# Configure your project
-
-Unlike a typical role, you need to configure Ansible to use an alternative python interpreter for coreos hosts. This can be done by adding a `coreos` group to your inventory file and setting the group's vars to use the new python interpreter. This way, you can use ansible to manage CoreOS and non-CoreOS hosts. Simply put every host that has CoreOS into the `coreos` inventory group and it will automatically use the specified python interpreter.
+Or add the role directly:
+```bash
+ansible-galaxy install git+https://github.com/instrumentisto/ansible-coreos-bootstrap
 ```
+
+
+
+
+## Configure your project
+
+Unlike a typical role, you need to configure [Ansible] to use an alternative [Python] interpreter for [CoreOS] hosts. This can be done by adding a `coreos` group to your inventory file and setting the group's vars to use the new [Python] interpreter. This way, you can use [Ansible] to manage [CoreOS] and non-[CoreOS] hosts. Simply put every host that has [CoreOS] into the `coreos` inventory group and it will automatically use the specified [Python] interpreter.
+```ini
 [coreos]
 host-01
 host-02
@@ -21,46 +41,72 @@ ansible_ssh_user=core
 ansible_python_interpreter=/home/core/bin/python
 ```
 
-This will configure ansible to use the python interpreter at `/home/core/bin/python` which will be created by the coreos-bootstrap role.
+This will configure [Ansible] to use the [Python] interpreter at `/home/core/bin/python` which will be created by the `coreos-bootstrap` role.
+
+
+
 
 ## Bootstrap Playbook
 
-Now you can simply add the following to your playbook file and include it in your `site.yml` so that it runs on all hosts in the coreos group.
+Now you can simply add the following to your playbook file and include it in your `site.yml` so that it runs on all hosts in the `coreos` group.
 
 ```yaml
 - hosts: coreos
   gather_facts: False
   roles:
-    - defunctzombie.coreos-bootstrap
+    - instrumentisto.coreos-bootstrap
 ```
 
-Make sure that `gather_facts` is set to false, otherwise ansible will try to first gather system facts using python which is not yet installed!
+Make sure that `gather_facts` is set to `False`, otherwise [Ansible] will try to first gather system facts using [Python] which is __not yet installed__!
+
+
+
 
 ## Example Playbook
 
-After bootstrap, you can use ansible as usual to manage system services, install python modules (via pip), and run containers. Below is a basic example that starts the `etcd` service, installs the `docker-py` module and then uses the ansible `docker` module to pull and start a basic nginx container.
+After bootstrap, you can use [Ansible] as usual to manage system services, install [Python] modules (via `pip`), and run containers. Below is a basic example that starts the `etcd` service, installs the `docker-py` module and then uses the [Ansible] `docker` module to pull and start a basic [Nginx] container.
 
 ```yaml
 - name: Nginx Example
   hosts: web
-  sudo: true
+  become_method: sudo
+  become: yes
   tasks:
     - name: Start etcd
-      service: name=etcd.service state=started
+      systemd: 
+        name: etcd.service 
+        state: started
 
     - name: Install docker-py
-      pip: name=docker-py
+      pip:
+        name: docker-py
+        state: present
+        executable: /home/core/bin/pip
 
-    - name: pull container
+    - name: Pull container
       raw: docker pull nginx:1.7.1
 
-    - name: launch nginx container
+    - name: Launch Nginx container
       docker:
-        image="nginx:1.7.1"
-        name="example-nginx"
-        ports="8080:80"
-        state=running
+        name: example-nginx
+        image: nginx:1.7.1
+        ports: "8080:80"
+        state: running
 ```
 
-# License
-MIT
+
+
+
+## License
+
+[MIT](LICENSE)
+
+
+
+
+
+[Ansible]: https://docs.ansible.com
+[CoreOS]: https://coreos.com/why
+[Nginx]: https://hub.docker.com/_/nginx
+[PyPy]: http://pypy.org
+[Python]: https://www.python.org

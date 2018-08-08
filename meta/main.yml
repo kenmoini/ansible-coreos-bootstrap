@@ -3,8 +3,8 @@ dependencies: []
 
 galaxy_info:
   author: defunctzombie
-  description: "bootstrap coreos hosts to run ansible"
-  license: "MIT"
+  description: Bootstrap CoreOS hosts to run Ansible
+  license: MIT
   min_ansible_version: 1.4
   categories:
     - system
