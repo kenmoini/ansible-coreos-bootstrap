@@ -1,6 +1,8 @@
 coreos-bootstrap
 ================
 
+[![Build Status](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap.svg?branch=master)](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap)
+
 In order to effectively run [Ansible], the target machine needs to have a [Python] interpreter. [CoreOS] machines are minimal and do not ship with any version of [Python]. To get around this limitation we can install [PyPy], a lightweight [Python] interpreter. The `coreos-bootstrap` role will install [PyPy] for us and we will update our inventory file to use the installed python interpreter.
 
 

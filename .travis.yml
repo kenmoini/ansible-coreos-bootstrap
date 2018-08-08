@@ -1,17 +1,16 @@
 language: python
 python: "2.7"
 
-env:
-  - SITE=test.yml
-
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y curl
 
 install:
   - pip install ansible
-  # Add ansible.cfg to pick up roles path.
-  - printf '[defaults]\nroles_path = ../' > ansible.cfg
+
+before_script:
+  - mkdir -p tests/roles/
+  - ln -s ../../../ansible-coreos-bootstrap/ tests/roles/coreos-bootstrap
 
 script:
-  - ansible-playbook -i tests/inventory tests/$SITE --syntax-check
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
