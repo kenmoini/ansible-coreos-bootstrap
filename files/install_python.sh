@@ -34,4 +34,4 @@ chmod +x "$PYTHON_DIR/bin/python"
 "$PYTHON_DIR/bin/python" --version
 
 
-touch "$PYTHON_DIR/.bootstrapped_$PYTHON_VERSION_$PYPY_VERSION"
+touch "$PYTHON_DIR/.bootstrapped_${PYTHON_VERSION}_$PYPY_VERSION"
