@@ -29,7 +29,10 @@
 
 - name: Install pip launcher
   copy:
-    src: runner.sh
     dest: "{{ ansible_python_dir }}/bin/pip"
     mode: 0755
+    content: |
+      #!/bin/sh
+      LD_LIBRARY_PATH={{ ansible_python_dir }}/pypy/lib:$LD_LIBRARY_PATH \
+        exec {{ ansible_python_dir }}/pypy/bin/$(basename $0) $@
   when: need_pip is failed
