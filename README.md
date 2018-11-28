@@ -1,7 +1,7 @@
 coreos-bootstrap
 ================
 
-[![GitHub release](https://img.shields.io/github/release/instrumentisto/ansible-coreos-bootstrap.svg)](https://github.com/instrumentisto/ansible-coreos-bootstrap/releases/latest) [![Build Status](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap.svg?branch=master)](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap) [![PyPy](https://img.shields.io/badge/Portable%20PyPy-6.0.0-blue.svg)](https://github.com/squeaky-pl/portable-pypy)
+[![GitHub release](https://img.shields.io/github/release/instrumentisto/ansible-coreos-bootstrap.svg)](https://github.com/instrumentisto/ansible-coreos-bootstrap/releases/latest) [![Build Status](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap.svg?branch=master)](https://travis-ci.org/instrumentisto/ansible-coreos-bootstrap) [![Python](https://img.shields.io/badge/Python-3.5-blue.svg)](https://github.com/squeaky-pl/portable-pypy) [![PyPy](https://img.shields.io/badge/Portable%20PyPy-6.0.0-blue.svg)](https://github.com/squeaky-pl/portable-pypy)
 
 In order to effectively run [Ansible], the target machine needs to have a [Python] interpreter. [CoreOS] machines are minimal and do not ship with any version of [Python]. To get around this limitation we can install [PyPy], a lightweight [Python] interpreter. The `coreos-bootstrap` role will install [PyPy] for us and we will update our inventory file to use the installed python interpreter.
 
@@ -37,13 +37,16 @@ Unlike a typical role, you need to configure [Ansible] to use an alternative [Py
 [coreos]
 host-01
 host-02
-
-[coreos:vars]
-ansible_ssh_user=core
-ansible_python_interpreter=/home/core/bin/python
 ```
 
-This will configure [Ansible] to use the [Python] interpreter at `/home/core/bin/python` which will be created by the `coreos-bootstrap` role.
+The role sets defaults for these, but you can set them yourself just in case:
+```ini
+[coreos:vars]
+ansible_ssh_user=core
+ansible_python_interpreter=/opt/python/bin/python
+```
+
+This will configure [Ansible] to use the [Python] interpreter at `/opt/python/bin/python` which will be created by the `coreos-bootstrap` role.
 
 
 
@@ -55,6 +58,7 @@ Now you can simply add the following to your playbook file and include it in you
 ```yaml
 - hosts: coreos
   gather_facts: False
+  become: yes
   roles:
     - instrumentisto.coreos-bootstrap
 ```
@@ -75,15 +79,15 @@ After bootstrap, you can use [Ansible] as usual to manage system services, insta
   become: yes
   tasks:
     - name: Start etcd
-      systemd: 
-        name: etcd.service 
+      systemd:
+        name: etcd.service
         state: started
 
     - name: Install docker-py
       pip:
         name: docker-py
         state: present
-        executable: /home/core/bin/pip
+        executable: /opt/python/bin/pip
 
     - name: Pull container
       raw: docker pull nginx:1.7.1
