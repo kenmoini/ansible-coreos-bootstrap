@@ -6,23 +6,30 @@ All user visible changes to this project will be documented in this file. This p
 
 
 
-## [2.0.0] · 2018-??-??
+## [2.0.0] · 2018-11-28
 
 [Diff](https://github.com/instrumentisto/ansible-coreos-bootstrap/compare/1.0.0...2.0.0)
 
 #### BC Breaks
 
-- Switch to [Python 3.5] in [PyPy] (#3).
-- Move installation into `/opt/python/` directory by default (#3).
-- Require `min_ansible_version: 2.5` (#3).
+- Switch to [Python 3.5] in [PyPy] ([#3]).
+- Move installation into `/opt/python/` directory by default ([#3]).
+- Require `min_ansible_version: 2.5` ([#3]).
 
 #### Added
 
-- Configurable installation directory via `ansible_python_dir` variable (#3).
+- Configurable installation directory via `ansible_python_dir` variable ([#3]).
 
 #### Changed
 
-- Separate installation checks for [PyPy] and [pip] (#3).
+- Separate installation checks for [PyPy] and [pip] ([#3]).
+
+#### Fixed
+
+- Idempotency of `need_python` detection ([#1]).
+
+[#1]: https://github.com/instrumentisto/ansible-coreos-bootstrap/pull/1
+[#3]: https://github.com/instrumentisto/ansible-coreos-bootstrap/pull/3
 
 
 
