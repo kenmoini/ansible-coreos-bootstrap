@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  role_name: coreos-bootstrap
+  role_name: ansible-coreos-bootstrap
   author: kenmoini
   description: Bootstrap CoreOS hosts to run Ansible
   license: MIT
