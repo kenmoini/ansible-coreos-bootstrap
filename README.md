@@ -12,8 +12,8 @@ In order to effectively run [Ansible], the target machine needs to have a [Pytho
 
 Add to your `requirements.yml`:
 ```yaml
-- name: instrumentisto.coreos-bootstrap
-  src: git+https://github.com/instrumentisto/ansible-coreos-bootstrap
+- name: kenmoini.coreos-bootstrap
+  src: git+https://github.com/kenmoini/ansible-coreos-bootstrap
   version: master
 ```
 
@@ -24,7 +24,7 @@ ansible-galaxy install -r requirements.yml
 
 Or add the role directly:
 ```bash
-ansible-galaxy install git+https://github.com/instrumentisto/ansible-coreos-bootstrap
+ansible-galaxy install git+https://github.com/kenmoini/ansible-coreos-bootstrap
 ```
 
 
@@ -60,7 +60,7 @@ Now you can simply add the following to your playbook file and include it in you
   gather_facts: False
   become: yes
   roles:
-    - instrumentisto.coreos-bootstrap
+    - kenmoini.coreos-bootstrap
 ```
 
 Make sure that `gather_facts` is set to `False`, otherwise [Ansible] will try to first gather system facts using [Python] which is __not yet installed__!
