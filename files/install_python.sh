@@ -33,5 +33,11 @@ EOF
 chmod +x "$PYTHON_DIR/bin/python"
 "$PYTHON_DIR/bin/python" --version
 
+cat > "/etc/profile.d/python-path.sh" <<EOF
+#!/bin/bash
+export PATH="$PATH:/opt/python/bin"
+EOF
+
+chmod +x /etc/profile.d/python-path.sh
 
 touch "$PYTHON_DIR/.bootstrapped_${PYTHON_VERSION}_$PYPY_VERSION"
